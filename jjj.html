@@ -1,0 +1,72 @@
+<html>
+<head>
+  <!-- Load plotly.js into the DOM -->
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <style>
+  .myDiv {
+    border: 5px outset red;
+    background-color: lightblue;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  </style>
+</head>
+
+<body>
+  <center> <h1> interpolate 42x42x42 </h1> </center>
+  <div id='myDiv'>
+    <!-- Plotly chart will be drawn inside this DIV -->
+  </div>
+  <script>
+
+Plotly.d3.csv('https://raw.githubusercontent.com/ebylaska/test/master/jjj888.csv', function(err, rows){
+  function unpack(rows, key) {
+  return rows.map(function(row) {return parseFloat(row[key]); });
+}
+
+var data = [
+    {
+        type: "isosurface",
+        x: unpack(rows, 'x'),
+        y: unpack(rows, 'y'),
+        z: unpack(rows, 'z'),
+        value: unpack(rows, 'value'),
+        isomin: 0.19,
+        isomax: 0.52,
+        colorscale: "Jet",
+        opacity: 0.50,
+        surface: {show: true, count: 6, fill: 1.8 },
+        slices: {z: {
+          show: true, locations: [0.0, 0.25, 0.50, 0.75]
+        }},
+        caps: {
+            x: {show: false},
+            y: {show: false},
+            z: {show: false}
+        },
+    }
+];
+
+var layout = {
+    height: 400,
+    margin: {t:0, l:0, b:0},
+    scene: {
+        camera: {
+            eye: {
+                x: 1.86,
+                y: 0.61,
+                z: 0.98
+            }
+        }
+    }
+};
+
+Plotly.newPlot('myDiv', data, layout, {showSendToCloud: true});
+});
+  </script>
+
+
+
+</body>
+</html>
